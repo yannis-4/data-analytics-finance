@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 import requests
+import json
 
 
 # preparing names for later use
@@ -99,5 +100,12 @@ print("   ")
 url = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=MSFT&&apikey=N5HP2RWWOV3JI4A5'
 r = requests.get(url)
 data = r.json()
+print("Below is the most recent MSFT stock values:", '\n',json.dumps(data, indent = 4))
 
-print(data)
+print("   ")
+
+arr = np.array(stocks_list)
+print(arr.shape)
+newarr = arr.reshape(2, 1)
+print(newarr.shape)
+
