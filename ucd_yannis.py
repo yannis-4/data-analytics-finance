@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import os
+import requests
+
 
 # preparing names for later use
 cwd = os.getcwd()
@@ -37,13 +39,12 @@ for x in data_folder_files:
     # adding 1 column with the stock name
     z.insert(0, 'Stock', y, True)
 
-
+    # adding the dataset to the list
     merged_data.append(z)  # end of the loop
 
 
 # appending all datasets into one
 appended_data = pd.concat(merged_data)
-
 
 
 # check for missing or N/A values and print 2 reports
@@ -56,7 +57,6 @@ count_na_values = appended_data.isna().sum()
 print('The below are the number of N/A values', '\n', count_na_values)
 
 print("   ")
-
 
 # setting up the check for NA lines and columns
 drop_na_rows= appended_data.dropna()
@@ -75,22 +75,16 @@ else:
     cleaned_data = appended_data
     print('All missing lines that were missing have been dropped')
 
-
 print("   ")
 print("   ")
-
 
 # sorting the appended dataset by Date
 appended_data.sort_values(by=['Date'], inplace=True)
-#print(appended_data) # use this to check how the data looks
-
-
+print(appended_data) # use this to check how the data looks
 
 # reporting the size of the final dataset
 print('The final merged dataset has this shape:', cleaned_data.shape)
 print("   ")
-
-
 
 # Some useful lists of the project
 print("The stocks we examined are:")
@@ -98,3 +92,12 @@ print(stocks_list)
 print("   ")
 print("The individual dataset files are:")
 print(data_files)
+
+print("   ")
+
+# below we see the latest values for the MSFT stock with the use of an API
+url = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=MSFT&&apikey=N5HP2RWWOV3JI4A5'
+r = requests.get(url)
+data = r.json()
+
+print(data)
