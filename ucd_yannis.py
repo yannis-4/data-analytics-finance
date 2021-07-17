@@ -4,6 +4,12 @@ import os
 import requests
 import json
 
+# just an introduction using a function
+def my_function(yan):
+    print("My name is " + yan + " and this is my project for UCD")
+my_function("Yannis")
+
+print("   ")
 
 # preparing names for later use
 cwd = os.getcwd()
@@ -12,8 +18,9 @@ data_folder_files = os.listdir(data_folder)
 main_folder_files = os.listdir(cwd)
 
 #print(data_folder_files)
-print("The files in %r: %s" % (cwd, main_folder_files))
-print("The files in %r: %s" % (cwd, data_folder_files))
+print("The files in the home folder %r \nare: %s" % (cwd, main_folder_files))
+print("   ")
+print("The files in the data folder %r \nare: %s" % (data_folder, data_folder_files))
 print("   ")
 
 # preparing 3 lists for the below loop
@@ -47,10 +54,11 @@ for x in data_folder_files:
 # appending all datasets into one
 appended_data = pd.concat(merged_data)
 
+print("All data files are now successfully merged in one dataset", '\n')
 
 # check for missing or N/A values and print 2 reports
 count_missing_values = appended_data.isnull().sum()
-print('The below are the number of missing values', '\n', count_missing_values)
+print('The below are the number of missing values','\n', count_missing_values)
 
 print("   ")
 
@@ -104,8 +112,9 @@ print("Below is the most recent MSFT stock values:", '\n',json.dumps(data, inden
 
 print("   ")
 
+# this is a simple use of numpy creating an array out of a list
 arr = np.array(stocks_list)
-print(arr.shape)
+print("This is the shape of the initial array:", arr.shape)
 newarr = arr.reshape(2, 1)
-print(newarr.shape)
+print("This is the shape of the new array after rearranging it:",newarr.shape)
 
