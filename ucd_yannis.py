@@ -173,3 +173,32 @@ plt.legend(one_year_indexed.columns)
 
 # exporting the plot as an image
 plt.savefig('msft_vs_aapl_2.png', bbox_inches='tight')
+
+
+
+
+# third graph is about the volume traded in millions:
+# adding a new column with the Trade value in millions for the 2 stocks
+msft['Trade value in mln'] = msft['Volume'] * msft['Close'] / 1000000
+aapl['Trade value in mln'] = aapl['Volume'] * aapl['Close'] / 1000000
+
+# keeping only 2 columns
+msft_volumes = msft[['Date', 'Trade value in mln']]
+aapl_volumes = aapl[['Date', 'Trade value in mln']]
+
+# renaming the close column with the stock name
+msft_volumes.columns = ['Date', 'MSFT']
+aapl_volumes.columns = ['Date', 'AAPL']
+
+# merging the 2 stocks into 1 dataset
+two_stocks_volumes = pd.merge(msft_volumes, aapl_volumes)
+# deleting the Date column so that I only have the 2 volumes
+del two_stocks_volumes['Date']
+
+plt.figure(3)
+plt.ylabel('')
+two_stocks_volumes[two_stocks_volumes.columns[0:]].sum().plot.pie()
+#pylab.ylabel('')
+plt.title('MSFT and AAPL traded volumes in mln comparison')
+plt.legend(two_stocks_volumes.columns)
+plt.savefig('pie.png', bbox_inches='tight')
