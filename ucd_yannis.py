@@ -3,6 +3,7 @@ import numpy as np
 import os
 import requests
 import json
+import matplotlib.pyplot as plt
 
 # just an introduction using a function
 def my_function(yan):
@@ -118,3 +119,57 @@ print("This is the shape of the initial array:", arr.shape)
 newarr = arr.reshape(2, 1)
 print("This is the shape of the new array after rearranging it:",newarr.shape)
 
+
+# the below part of the code is all about graphs
+# opening the 2 stocks csv that I will examine
+msft = pd.read_csv(os.path.join(data_folder, 'MSFT.csv'))
+aapl = pd.read_csv(os.path.join(data_folder, 'AAPL.csv'))
+
+# keeping only 2 columns
+msft_new = msft[['Date', 'Close']]
+aapl_new = aapl[['Date', 'Close']]
+
+# renaming the close column with the stock name
+msft_new.columns = ['Date', 'MSFT']
+aapl_new.columns = ['Date', 'AAPL']
+
+# merging the 2 stocks into 1 dataset
+two_stocks = pd.merge(msft_new, aapl_new)
+
+# indexing the new dataset
+stocks_indexed = (two_stocks.set_index('Date'))
+print(stocks_indexed)
+
+# dividing each row by the first row so that I can compare them easily setting the base in day 1
+stocks_indexed_a = stocks_indexed / stocks_indexed.iloc[0]
+
+# preparing the 1st graph that compares the 2
+plt.figure(1)
+for i, col in enumerate(stocks_indexed_a.columns):
+    stocks_indexed_a[col].plot()
+plt.title('MSFT and AAPL price comparison')
+plt.xticks(rotation=70)
+plt.legend(stocks_indexed_a.columns)
+
+# exporting the plot as an image
+plt.savefig('msft_vs_aapl_1.png', bbox_inches='tight')
+
+
+# doing the exact same as above but only for the last year
+
+# keeping the last year of data, then reseting the indexing
+two_stocks_1y = two_stocks.drop(two_stocks.index[:-253])
+two_stocks_1y = two_stocks_1y.reset_index(drop=True)
+two_stocks_1y_indexed = (two_stocks_1y.set_index('Date'))
+# dividing each row by the first row so that I can compare them easily setting the base in day 1
+one_year_indexed = two_stocks_1y_indexed / two_stocks_1y_indexed.iloc[0]
+# preparing the 2nd graph that compares the 2 (1 year data)
+plt.figure(2)
+for i, col in enumerate(one_year_indexed.columns):
+    one_year_indexed[col].plot()
+plt.title('MSFT and AAPL price comparison for last year')
+plt.xticks(rotation=70)
+plt.legend(one_year_indexed.columns)
+
+# exporting the plot as an image
+plt.savefig('msft_vs_aapl_2.png', bbox_inches='tight')
