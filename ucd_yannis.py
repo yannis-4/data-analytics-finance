@@ -116,8 +116,6 @@ print("   ")
 # this is a simple use of numpy creating an array out of a list
 arr = np.array(stocks_list)
 print("This is the shape of the initial array:", arr.shape)
-newarr = arr.reshape(2, 1)
-print("This is the shape of the new array after rearranging it:",newarr.shape)
 
 
 # the below part of the code is all about graphs
